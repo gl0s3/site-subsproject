@@ -1,0 +1,20 @@
+{% extends "subscriptions/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-success text-white">
+                    <h4 class="mb-0">Успешное подтверждение</h4>
+                </div>
+                <div class="card-body">
+                    <p>Ваш аккаунт успешно подтвержден!</p>
+                    <a href="{% url 'login' %}" class="btn btn-primary">Войти</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

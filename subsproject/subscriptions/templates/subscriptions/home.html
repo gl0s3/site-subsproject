@@ -1,0 +1,12 @@
+{% extends "subscriptions/base.html" %}
+
+{% block content %}
+<div class="hero">
+    <h1>Контролируйте свои подписки</h1>
+    <p>Управляйте расходами, получайте напоминания и анализируйте траты</p>
+    <div class="cta-buttons">
+        <a href="{% url 'signup' %}" class="btn btn-primary">Начать бесплатно</a>
+        <a href="{% url 'login' %}" class="btn btn-secondary">Войти в аккаунт</a>
+    </div>
+</div>
+{% endblock %}

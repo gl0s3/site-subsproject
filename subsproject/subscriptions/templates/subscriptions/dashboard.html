@@ -1,0 +1,26 @@
+{% extends "subscriptions/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h1>Ваши подписки</h1>
+    <div class="row">
+        {% for sub in subscriptions %}
+        <div class="col-md-4 mb-4">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">{{ sub.service_name }}</h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">Цена: {{ sub.price }} ₽</p>
+                    <p class="card-text">Срок: {{ sub.duration }} дней</p>
+                    <p class="card-text">Статус: {{ sub.status }}</p>
+                    <p class="card-text">Истекает: {{ sub.end_date|date:"d.m.Y" }}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <a href="{% url 'add_subscription' %}" class="btn btn-primary">Добавить подписку</a>
+</div>
+{% endblock %}
