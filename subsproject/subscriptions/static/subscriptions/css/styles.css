@@ -11,49 +11,74 @@ body {
 .card {
     border: none;
     border-radius: 10px;
+    transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+    transform: scale(1.02);
 }
 
 .card-header {
     border-radius: 10px 10px 0 0;
+    background-color: #0d6efd;
+    color: white;
 }
 
-.btn-primary {
+.card-body {
+    padding: 1.5rem;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    border: none;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+}
+
+/* Темная тема */
+[data-bs-theme="dark"] body {
+    background-color: #121212;
+    color: #ffffff;
+}
+
+[data-bs-theme="dark"] .navbar {
+    background-color: #1a1a1a !important;
+}
+
+[data-bs-theme="dark"] .card {
+    background-color: #1e1e1e;
+    color: #ffffff;
+}
+
+[data-bs-theme="dark"] .card-header {
+    background-color: #2a2a2a;
+}
+
+[data-bs-theme="dark"] .form-control {
+    background-color: #2a2a2a;
+    color: #ffffff;
+    border-color: #444;
+}
+
+[data-bs-theme="dark"] .form-control:focus {
+    background-color: #2a2a2a;
+    color: #ffffff;
+    border-color: #666;
+}
+
+[data-bs-theme="dark"] .btn-primary {
     background-color: #0d6efd;
     border: none;
-    padding: 10px;
-    font-size: 16px;
 }
 
-.btn-primary:hover {
+[data-bs-theme="dark"] .btn-primary:hover {
     background-color: #0b5ed7;
 }
 
-.alert {
-    border-radius: 5px;
-}
-
-/* Формы */
-.form-control {
-    border-radius: 5px;
-    padding: 10px;
-    border: 1px solid #ddd;
-}
-
-.form-control:focus {
-    border-color: #0d6efd;
-    box-shadow: none;
-}
-
-/* Адаптивность */
-@media (max-width: 768px) {
-    .navbar-nav {
-        margin-top: 10px;
-    }
-}
-.btn {
-    transition: transform 0.2s ease-in-out;
-}
-
-.btn:hover {
-    transform: scale(1.05);
+[data-bs-theme="dark"] .alert {
+    background-color: #2a2a2a;
+    color: #ffffff;
+    border-color: #444;
 }

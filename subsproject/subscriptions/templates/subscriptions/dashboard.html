@@ -3,24 +3,26 @@
 
 {% block content %}
 <div class="container">
-    <h1>Ваши подписки</h1>
+    <h2 class="my-4">Мои подписки</h2>
     <div class="row">
-        {% for sub in subscriptions %}
+        {% for subscription in subscriptions %}
         <div class="col-md-4 mb-4">
-            <div class="card shadow">
+            <div class="card shadow border-0">
                 <div class="card-header bg-primary text-white">
-                    <h5 class="card-title mb-0">{{ sub.service_name }}</h5>
+                    <h5 class="card-title mb-0">{{ subscription.service_name }}</h5>
                 </div>
                 <div class="card-body">
-                    <p class="card-text">Цена: {{ sub.price }} ₽</p>
-                    <p class="card-text">Срок: {{ sub.duration }} дней</p>
-                    <p class="card-text">Статус: {{ sub.status }}</p>
-                    <p class="card-text">Истекает: {{ sub.end_date|date:"d.m.Y" }}</p>
+                    <p class="card-text">
+                        <strong>Цена:</strong> {{ subscription.price }} руб.<br>
+                        <strong>Статус:</strong> {{ subscription.status }}<br>
+                        <strong>Дата окончания:</strong> {{ subscription.end_date }}
+                    </p>
+                    <a href="{{ subscription.service_link }}" target="_blank" class="btn btn-secondary btn-sm">Перейти</a>
+                    <a href="{% url 'delete_subscription' subscription.id %}" class="btn btn-danger btn-sm">Удалить</a>
                 </div>
             </div>
         </div>
         {% endfor %}
     </div>
-    <a href="{% url 'add_subscription' %}" class="btn btn-primary">Добавить подписку</a>
 </div>
 {% endblock %}

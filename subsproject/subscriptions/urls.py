@@ -9,4 +9,6 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('dashboard/', views.dashboard, name='dashboard'),
     path('add_subscription/', views.add_subscription, name='add_subscription'),
+    path('delete_subscription/<int:subscription_id>/', views.delete_subscription, name='delete_subscription'),
+    path('toggle_theme/', views.toggle_theme, name='toggle_theme'),
 ]

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Subscription, GoogleCalendarToken
+from .models import Subscription
 
 @admin.register(Subscription)
 class SubscriptionAdmin(admin.ModelAdmin):
@@ -7,7 +7,3 @@ class SubscriptionAdmin(admin.ModelAdmin):
     list_filter = ('user', 'start_date')
     search_fields = ('service_name', 'user__username')
 
-@admin.register(GoogleCalendarToken)
-class GoogleCalendarTokenAdmin(admin.ModelAdmin):
-    list_display = ('user', 'expires_at')
-    search_fields = ('user__username',)

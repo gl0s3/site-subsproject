@@ -1,11 +1,12 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" data-bs-theme="{{ request.user.userprofile.theme }}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}SubTracker{% endblock %}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <link rel="stylesheet" href="{% static 'subscriptions/css/styles.css' %}">
 </head>
 <body>
@@ -19,22 +20,51 @@
                 <ul class="navbar-nav ms-auto">
                     {% if user.is_authenticated %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'dashboard' %}">{{ user.username }}</a>
+                            <a class="nav-link" href="{% url 'dashboard' %}">
+                                <i class="bi bi-house-door"></i> {{ user.username }}
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'add_subscription' %}">Добавить подписку</a>
+                            <a class="nav-link" href="{% url 'add_subscription' %}">
+                                <i class="bi bi-plus-circle"></i> Добавить подписку
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'logout' %}">Выйти</a>
+                            <a class="nav-link" href="{% url 'logout' %}">
+                                <i class="bi bi-box-arrow-right"></i> Выйти
+                            </a>
                         </li>
                     {% else %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'login' %}">Войти</a>
+                            <a class="nav-link" href="{% url 'login' %}">
+                                <i class="bi bi-box-arrow-in-right"></i> Войти
+                            </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'signup' %}">Регистрация</a>
+                            <a class="nav-link" href="{% url 'signup' %}">
+                                <i class="bi bi-person-plus"></i> Регистрация
+                            </a>
                         </li>
                     {% endif %}
+                    {% if user.is_staff %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'admin:index' %}">
+                                <i class="bi bi-gear"></i> Админ панель
+                            </a>
+                        </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <form action="{% url 'toggle_theme' %}" method="post" class="d-flex">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-link nav-link">
+                                {% if request.user.userprofile.theme == 'dark' %}
+                                    <i class="bi bi-sun"></i> Светлая тема
+                                {% else %}
+                                    <i class="bi bi-moon"></i> Темная тема
+                                {% endif %}
+                            </button>
+                        </form>
+                    </li>
                 </ul>
             </div>
         </div>

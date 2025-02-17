@@ -20,7 +20,10 @@ class SignUpForm(UserCreationForm):
 class SubscriptionForm(forms.ModelForm):
     class Meta:
         model = Subscription
-        fields = ['service_name', 'service_link', 'price', 'duration']
+        fields = ['service_name', 'service_link', 'price', 'duration', 'start_date']
+        widgets = {
+            'service_link': forms.URLInput(attrs={'placeholder': 'example.com'}),
+        }
 
     def clean_price(self):
         price = self.cleaned_data.get('price')
@@ -33,3 +36,9 @@ class SubscriptionForm(forms.ModelForm):
         if duration < 1:
             raise ValidationError("Срок должен быть не менее 1 дня")
         return duration
+
+    def clean_service_link(self):
+        service_link = self.cleaned_data.get('service_link')
+        if service_link and not service_link.startswith(('http://', 'https://')):
+            service_link = 'http://' + service_link
+        return service_link
