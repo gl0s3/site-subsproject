@@ -1,0 +1,26 @@
+{% extends "subscriptions/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">Восстановление аккаунта</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="id_email" class="form-label">Email для восстановления</label>
+                            {{ form.email }}
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100">Отправить</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

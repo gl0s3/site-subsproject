@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="ru" data-bs-theme="{{ request.user.userprofile.theme }}">
+<html lang="ru" data-bs-theme="{% if request.user.is_authenticated %}{{ request.user.userprofile.theme }}{% else %}{{ request.session.theme|default:'light' }}{% endif %}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -30,37 +30,54 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a class="nav-link" href="{% url 'statistics' %}">
+                                <i class="bi bi-bar-chart"></i> Статистика
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="{% url 'logout' %}">
                                 <i class="bi bi-box-arrow-right"></i> Выйти
                             </a>
                         </li>
                     {% else %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'login' %}">
-                                <i class="bi bi-box-arrow-in-right"></i> Войти
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="authDropdown" role="button" data-bs-toggle="dropdown">
+                                <i class="bi bi-person"></i> Вход/Регистрация
                             </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'signup' %}">
-                                <i class="bi bi-person-plus"></i> Регистрация
-                            </a>
-                        </li>
-                    {% endif %}
-                    {% if user.is_staff %}
-                        <li class="nav-item">
-                            <a class="nav-link" href="{% url 'admin:index' %}">
-                                <i class="bi bi-gear"></i> Админ панель
-                            </a>
+                            <div class="dropdown-menu dropdown-menu-end">
+                                <form class="px-4 py-3" method="post" action="{% url 'login' %}">
+                                    {% csrf_token %}
+                                    <div class="mb-3">
+                                        <label for="id_username" class="form-label">Имя пользователя</label>
+                                        <input type="text" name="username" class="form-control" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="id_password" class="form-label">Пароль</label>
+                                        <input type="password" name="password" class="form-control" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary w-100">Войти</button>
+                                </form>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{% url 'signup' %}">Зарегистрироваться</a>
+                            </div>
                         </li>
                     {% endif %}
                     <li class="nav-item">
                         <form action="{% url 'toggle_theme' %}" method="post" class="d-flex">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-link nav-link">
-                                {% if request.user.userprofile.theme == 'dark' %}
-                                    <i class="bi bi-sun"></i> Светлая тема
+                                {% if request.user.is_authenticated %}
+                                    {% if request.user.userprofile.theme == 'dark' %}
+                                        <i class="bi bi-sun"></i> Светлая тема
+                                    {% else %}
+                                        <i class="bi bi-moon"></i> Темная тема
+                                    {% endif %}
                                 {% else %}
-                                    <i class="bi bi-moon"></i> Темная тема
+                                    {% if request.session.theme == 'dark' %}
+                                        <i class="bi bi-sun"></i> Светлая тема
+                                    {% else %}
+                                        <i class="bi bi-moon"></i> Темная тема
+                                    {% endif %}
                                 {% endif %}
                             </button>
                         </form>
@@ -71,10 +88,12 @@
     </nav>
 
     <div class="container mt-4">
+        <!-- Уведомления -->
         {% if messages %}
             {% for message in messages %}
-                <div class="alert alert-{{ message.tags }}">
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
                     {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                 </div>
             {% endfor %}
         {% endif %}

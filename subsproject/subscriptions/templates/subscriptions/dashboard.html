@@ -7,7 +7,7 @@
     <div class="row">
         {% for subscription in subscriptions %}
         <div class="col-md-4 mb-4">
-            <div class="card shadow border-0">
+            <div class="card shadow">
                 <div class="card-header bg-primary text-white">
                     <h5 class="card-title mb-0">{{ subscription.service_name }}</h5>
                 </div>
@@ -15,14 +15,68 @@
                     <p class="card-text">
                         <strong>Цена:</strong> {{ subscription.price }} руб.<br>
                         <strong>Статус:</strong> {{ subscription.status }}<br>
-                        <strong>Дата окончания:</strong> {{ subscription.end_date }}
+                        <strong>Дата окончания:</strong> {{ subscription.end_date }}<br>
+                        {% if subscription.share_code %}
+                            <strong>Код для совместного доступа:</strong> {{ subscription.share_code }}<br>
+                            <strong>Совместно с:</strong>
+                            {% for user in subscription.shared_with.all %}
+                                {{ user.username }}{% if not forloop.last %}, {% endif %}
+                            {% endfor %}
+                        {% endif %}
                     </p>
-                    <a href="{{ subscription.service_link }}" target="_blank" class="btn btn-secondary btn-sm">Перейти</a>
-                    <a href="{% url 'delete_subscription' subscription.id %}" class="btn btn-danger btn-sm">Удалить</a>
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'delete_subscription' subscription.id %}" class="btn btn-danger btn-sm">Удалить</a>
+                        <a href="{% url 'edit_subscription' subscription.id %}" class="btn btn-warning btn-sm">Редактировать</a>
+                        <a href="{% url 'renew_subscription' subscription.id %}" class="btn btn-success btn-sm">Продлить</a>
+                        <a href="{% url 'share_subscription' subscription.id %}" class="btn btn-secondary btn-sm">Поделиться</a>
+                    </div>
                 </div>
             </div>
         </div>
         {% endfor %}
+    </div>
+
+    <!-- Поделенные подписки -->
+    <h2 class="my-4">Поделенные подписки</h2>
+    <div class="row">
+        {% for subscription in shared_subscriptions %}
+        <div class="col-md-4 mb-4">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">{{ subscription.service_name }}</h5>
+                </div>
+                <div class="card-body">
+                    <p class="card-text">
+                        <strong>Цена:</strong> {{ subscription.price }} руб.<br>
+                        <strong>Статус:</strong> {{ subscription.status }}<br>
+                        <strong>Дата окончания:</strong> {{ subscription.end_date }}<br>
+                        <strong>Владелец:</strong> {{ subscription.user.username }}
+                    </p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Форма для присоединения к подписке -->
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">Присоединиться к подписке</h5>
+                </div>
+                <div class="card-body">
+                    <form method="post" action="{% url 'join_subscription' %}">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="share_code" class="form-label">Код подписки</label>
+                            <input type="text" name="share_code" class="form-control" required>
+                        </div>
+                        <button type="submit" class="btn btn-outline-primary w-100">Присоединиться</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}
